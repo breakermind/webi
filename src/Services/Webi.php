@@ -9,15 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Webi\Mail\PasswordMail;
 use Webi\Mail\RegisterMail;
 use Webi\Http\Traits\WebiAuthHelper;
-use Webi\Http\Requests\LoginRequest;
-use Webi\Http\Requests\ActivateRequest;
-use Webi\Http\Requests\RegisterRequest;
-use Webi\Http\Requests\ResetPasswordRequest;
-use Webi\Http\Requests\ChangePasswordRequest;
+use Webi\Http\Requests\WebiLoginRequest;
+use Webi\Http\Requests\WebiActivateRequest;
+use Webi\Http\Requests\WebiRegisterRequest;
+use Webi\Http\Requests\WebiResetPasswordRequest;
+use Webi\Http\Requests\WebiChangePasswordRequest;
 
 class Webi
 {
@@ -46,7 +45,7 @@ class Webi
 		}
 	}
 
-	function login(LoginRequest $request)
+	function login(WebiLoginRequest $request)
 	{
 		$valid = $request->validated();
 		$remember = !empty($valid['remember_me']) ? true : false;
@@ -71,7 +70,7 @@ class Webi
 		}
 	}
 
-	function register(RegisterRequest $request)
+	function register(WebiRegisterRequest $request)
 	{
 		$user = null;
 		$valid = $request->validated();
@@ -99,7 +98,7 @@ class Webi
 		return response()->json(['message' => 'Account has been created, please confirm your email address.', 'created' => true], 201);
 	}
 
-	function activate(ActivateRequest $request)
+	function activate(WebiActivateRequest $request)
 	{
 		$valid = $request->validated();
 
@@ -122,7 +121,7 @@ class Webi
 		return response()->json(['message' => 'Logged out.']);
 	}
 
-	function reset(ResetPasswordRequest $request)
+	function reset(WebiResetPasswordRequest $request)
 	{
 		$user = null;
 		$valid = $request->validated();
@@ -148,7 +147,7 @@ class Webi
 		return response()->json(['message' => 'A new password has been sent to the e-mail address provided.']);
 	}
 
-	function change(ChangePasswordRequest $request)
+	function change(WebiChangePasswordRequest $request)
 	{
 		$valid = $request->validated();
 

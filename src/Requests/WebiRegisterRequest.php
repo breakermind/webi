@@ -4,8 +4,9 @@ namespace Webi\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest
+class WebiRegisterRequest extends FormRequest
 {
 	protected $stopOnFirstFailure = true;
 
@@ -22,9 +23,13 @@ class LoginRequest extends FormRequest
 		}
 
 		return [
-			'email' => ['required', $email, 'max:191'],
-			'password' => 'required|min:11',
-			'remember_me' => 'sometimes|boolean'
+			'name' => 'required|max:50',
+			'email' => [
+				'required', $email, 'max:191',
+				Rule::unique('users')->whereNull('deleted_at')
+			],
+			'password' => 'required|min:11|confirmed',
+			'password_confirmation' => 'required'
 		];
 	}
 
@@ -36,7 +41,7 @@ class LoginRequest extends FormRequest
 	function prepareForValidation()
 	{
 		$this->merge(
-			collect(request()->json()->all())->only(['email', 'password', 'remember_me'])->toArray()
+			collect(request()->json()->all())->only(['name', 'email', 'password', 'password_confirmation'])->toArray()
 		);
 	}
 }

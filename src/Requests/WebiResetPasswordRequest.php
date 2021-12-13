@@ -5,7 +5,7 @@ namespace Webi\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivateRequest extends FormRequest
+class WebiResetPasswordRequest extends FormRequest
 {
 	protected $stopOnFirstFailure = true;
 
@@ -22,8 +22,7 @@ class ActivateRequest extends FormRequest
 		}
 
 		return [
-			'id' => 'required|max:128',
-			'code' => 'required|string',
+			'email' => ['required', $email, 'max:191']
 		];
 	}
 
@@ -34,9 +33,8 @@ class ActivateRequest extends FormRequest
 
 	function prepareForValidation()
 	{
-		$this->merge([
-			'id' => request()->route('id'),
-			'code' => request()->route('code')
-		]);
+		$this->merge(
+			collect(request()->json()->all())->only(['email'])->toArray()
+		);
 	}
 }

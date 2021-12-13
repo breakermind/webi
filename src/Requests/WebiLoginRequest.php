@@ -5,7 +5,7 @@ namespace Webi\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangePasswordRequest extends FormRequest
+class WebiLoginRequest extends FormRequest
 {
 	protected $stopOnFirstFailure = true;
 
@@ -16,10 +16,15 @@ class ChangePasswordRequest extends FormRequest
 
 	public function rules()
 	{
+		$email = 'email:rfc,dns';
+		if(env('APP_DEBUG') == true) {
+			$email = 'email';
+		}
+
 		return [
-			'password_current' => 'required',
-			'password' => 'required|min:11|confirmed',
-			'password_confirmation' => 'required'
+			'email' => ['required', $email, 'max:191'],
+			'password' => 'required|min:11',
+			'remember_me' => 'sometimes|boolean'
 		];
 	}
 
@@ -31,7 +36,7 @@ class ChangePasswordRequest extends FormRequest
 	function prepareForValidation()
 	{
 		$this->merge(
-			collect(request()->json()->all())->only(['password_current', 'password', 'password_confirmation'])->toArray()
+			collect(request()->json()->all())->only(['email', 'password', 'remember_me'])->toArray()
 		);
 	}
 }

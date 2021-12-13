@@ -5,11 +5,11 @@ namespace Webi\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use Webi\Http\Requests\LoginRequest;
-use Webi\Http\Requests\ActivateRequest;
-use Webi\Http\Requests\RegisterRequest;
-use Webi\Http\Requests\ResetPasswordRequest;
-use Webi\Http\Requests\ChangePasswordRequest;
+use Webi\Http\Requests\WebiLoginRequest;
+use Webi\Http\Requests\WebiActivateRequest;
+use Webi\Http\Requests\WebiRegisterRequest;
+use Webi\Http\Requests\WebiResetPasswordRequest;
+use Webi\Http\Requests\WebiChangePasswordRequest;
 use Webi\Services\Webi;
 
 class WebiController extends Controller
@@ -24,27 +24,27 @@ class WebiController extends Controller
 		return (new Webi())->logged($r);
 	}
 
-	function login(LoginRequest $r)
+	function login(WebiLoginRequest $r)
 	{
 		return (new Webi())->login($r);
 	}
 
-	function activate(ActivateRequest $request)
+	function activate(WebiActivateRequest $request)
 	{
 		return (new Webi())->activate($request);
 	}
 
-	function register(RegisterRequest $r)
+	function register(WebiRegisterRequest $r)
 	{
 		return (new Webi())->register($r);
 	}
 
-	function reset(ResetPasswordRequest $r)
+	function reset(WebiResetPasswordRequest $r)
 	{
 		return (new Webi())->reset($r);
 	}
 
-	function change(ChangePasswordRequest $r)
+	function change(WebiChangePasswordRequest $r)
 	{
 		return (new Webi())->change($r);
 	}
