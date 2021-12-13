@@ -124,12 +124,6 @@ class WebiTest extends DataCase
 		$response->assertStatus(200)->assertJson(['message' => 'Logged out.']);
 	}
 
-	function test_user_login_remember_me_error()
-	{
-		$response = $this->getJson('/web/api/logged');
-		$response->assertStatus(422)->assertJson(['message' => 'Not authenticated.']);
-	}
-
 	function test_user_login_with_remember_me()
 	{
 		$this->data['remember_me'] = 1;
@@ -137,21 +131,25 @@ class WebiTest extends DataCase
 		$response = $this->postJson('/web/api/login', $this->data);
 		$response->assertStatus(200)->assertJson(['message' => 'Authenticated.']);
 
-		$this->disableCookieEncryption();
 		$this->setToken([
 			$response->headers->getCookies()[0]->getName() => $response->headers->getCookies()[0]->getValue(),
 			$response->headers->getCookies()[1]->getName() => $response->headers->getCookies()[1]->getValue(),
 			$response->headers->getCookies()[2]->getName() => $response->headers->getCookies()[2]->getValue(),
+			$response->headers->getCookies()[3]->getName() => $response->headers->getCookies()[3]->getValue(),
 		]);
 	}
 
 	function test_user_login_remember_me()
 	{
-		// $c = $this->getToken();
-		// $response = $this->withSession($c)->withCookies($c)->getJson('/web/api/logged');
 		$token = User::first()->remember_token;
-		$response = $this->withSession(['_remeber_token' => $token])->getJson('/web/api/logged');
+		$response = $this->withCookie('_remeber_token', $token)->get('/web/api/logged');
 		$response->assertStatus(200)->assertJson(['message' => 'Authenticated via remember me.']);
+	}
+
+	function test_user_login_remember_me_error()
+	{
+		$response = $this->getJson('/web/api/logged');
+		$response->assertStatus(422)->assertJson(['message' => 'Not authenticated.']);
 	}
 
 	public function test_user_details_can_be_retrieved()

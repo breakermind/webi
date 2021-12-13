@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 trait WebiAuthHelper
@@ -75,16 +76,24 @@ trait WebiAuthHelper
 
 	function setRemeberToken(User $user)
 	{
-		Session::put('_remeber_token', $user->remember_token);
+		// $name, $val, $minutes, $path, $domain, $secure, $httpOnly
+		Cookie::queue(
+			'_remember_token',
+			$user->remember_token,
+			env('APP_REMEBER_ME_MINUTES', 3592000),
+			'/',
+			'.'.request()->getHost(),
+			request()->secure(),
+			true
+		);
 	}
 
 	function loginRememberToken(Request $request)
 	{
-		$sess = Session::all();
-
-		if(!empty($sess['_remeber_token'])) {
+		$sess = $request->cookie('_remeber_token');
+		if(!empty($sess)) {
 			$user = User::where([
-				'remember_token' => $sess['_remeber_token']
+				'remember_token' => $sess
 			])->whereNotNull('email_verified_at')->first();
 
 			if ($user) {
