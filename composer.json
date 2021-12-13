@@ -1,0 +1,32 @@
+{
+	"name": "breakermind/webi",
+	"type": "library",
+	"license": "MIT",
+	"autoload": {
+		"classmap": [
+			"src/"
+		],
+		"psr-4": {
+			"Webi\\": "src/",
+			"Database\\Factories\\": "database/factories/",
+			"Database\\Migrations\\": "database/migrations/",
+			"Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"authors": [{
+		"name": "Marcin Łukaszewski",
+		"email": "marcin@breakermind.com"
+	}],
+	"minimum-stability": "dev",
+	"require": {},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Webi\\WebiServiceProvider"
+			],
+			"aliases": {
+				"Webi": "Webi\\Http\\Facades\\WebiFacade"
+			}
+		}
+	}
+}
