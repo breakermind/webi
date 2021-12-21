@@ -143,7 +143,7 @@ curl http://127.0.0.1:8000/api/logout
 		axios.get('/web/api/csrf').then(async () => {
 			try {
 				let r = await axios.post('/web/api/register', data)
-				console.log(r)
+				console.log(data)
 			} catch(e) {
 				console.log(e.response.data)
 				console.log(e.response.status);
