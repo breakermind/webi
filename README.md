@@ -1,4 +1,4 @@
-# Webi web rest api authentication for laravel
+# Webi web api authentication for laravel
 Web Rest Api register/login authentication with user account email verification.
 
 ### Default routes for rest api
