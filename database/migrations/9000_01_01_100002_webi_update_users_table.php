@@ -43,7 +43,7 @@ class WebiUpdateUsersTable extends Migration
 	public function down()
 	{
 		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn(['code', 'ip', 'role']);
+			$table->dropColumn(['code', 'ip', 'role', 'remember_token', 'deleted_at']);
 		});
 	}
 }

@@ -80,7 +80,7 @@ trait WebiAuthHelper
 		Cookie::queue(
 			'_remember_token',
 			$user->remember_token,
-			env('APP_REMEBER_ME_MINUTES', 3592000),
+			env('APP_REMEBER_ME_MINUTES', 3456789),
 			'/',
 			'.'.request()->getHost(),
 			request()->secure(),
@@ -96,12 +96,14 @@ trait WebiAuthHelper
 				'remember_token' => $sess
 			])->whereNotNull('email_verified_at')->first();
 
-			if ($user) {
-				$request->session()->regenerate();
-				Auth::login($user, true);
-				if(Auth::check()) {
-					return Auth::user();
-				}
+			$this->checkUser($user);
+
+			$request->session()->regenerate();
+
+			Auth::login($user, true);
+
+			if(Auth::check()) {
+				return Auth::user();
 			}
 		}
 		return null;
