@@ -31,7 +31,9 @@ class WebiActivateTest extends TestCase
 
 		$res = $this->get('/web/api/activate/'.$user->id.'/'.$user->code);
 
-		$res->assertStatus(200)->assertJson(['message' => 'Email has been confirmed.']);
+		$res->assertStatus(200)->assertJson([
+			'message' => 'Email has been confirmed.'
+		]);
 
 		$db_user = User::where('email', $user->email)->first();
 

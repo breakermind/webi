@@ -78,7 +78,9 @@ class WebiRegisterTest extends TestCase
 			'password_confirmation' => 'password123',
 		]);
 
-		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson(['message' => 'The email has already been taken.']);
+		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson([
+			'message' => 'The email has already been taken.'
+		]);
 	}
 
 	function test_error_name()
@@ -92,7 +94,9 @@ class WebiRegisterTest extends TestCase
 			'password_confirmation' => 'password123',
 		]);
 
-		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson(['message' => 'The name field is required.']);
+		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson([
+			'message' => 'The name field is required.'
+		]);
 	}
 
 	function test_error_email()
@@ -106,7 +110,9 @@ class WebiRegisterTest extends TestCase
 			'password_confirmation' => 'password123',
 		]);
 
-		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson(['message' => 'The email field is required.']);
+		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson([
+			'message' => 'The email field is required.'
+		]);
 	}
 
 	function test_error_password()
@@ -120,7 +126,9 @@ class WebiRegisterTest extends TestCase
 			'password_confirmation' => 'password123',
 		]);
 
-		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson(['message' => 'The password field is required.']);
+		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson([
+			'message' => 'The password field is required.'
+		]);
 	}
 
 	function test_error_password_confirmation()
@@ -134,6 +142,8 @@ class WebiRegisterTest extends TestCase
 			'password_confirmation' => '',
 		]);
 
-		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson(['message' => 'The password confirmation does not match.']);
+		$res->assertStatus(422)->assertJsonMissing(['created'])->assertJson([
+			'message' => 'The password confirmation does not match.'
+		]);
 	}
 }
