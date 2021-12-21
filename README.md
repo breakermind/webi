@@ -89,7 +89,7 @@ class User extends WebiUser
 }
 ```
 
-## Webi setup (optional)
+### Webi setup (optional)
 ```sh
 php artisan vendor:publish --provider="Webi\WebiServiceProvider.php"
 php artisan vendor:publish --tag=webi-config --force
