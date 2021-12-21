@@ -1,4 +1,4 @@
-# Sancti testing
+# Webi testing
 Before tests install package see package README.md and create testing database.
 
 ## Create .env.testing from .env and change
@@ -57,22 +57,22 @@ nano phpunit.xml
 cd app
 
 # copy test files
-php artisan vendor:publish --tag=sancti-tests --force
+php artisan vendor:publish --tag=webi-tests --force
 
 # test with artisan
-php artisan test tests/Sancti --stop-on-failure
+php artisan test tests/Webi --stop-on-failure
 
 # or with phpunit
-vendor/bin/phpunit tests/Sancti --stop-on-failure
+vendor/bin/phpunit tests/Webi --stop-on-failure
 ```
 
 ## Manually
-Copy files from package **tests/Sancti** directory to laravel app **tests/Sancti** directory
+Copy files from package **tests/Webi** directory to laravel app **tests/Webi** directory
 
 ### Add to laravel app phpunit.xml
 ```xml
-<testsuite name="Sancti">
-	<directory suffix="Test.php">./tests/Sancti</directory>
+<testsuite name="Webi">
+	<directory suffix="Test.php">./tests/Webi</directory>
 </testsuite>
 
 <env name="APP_ENV" value="testing" force="true"/>
@@ -81,5 +81,5 @@ Copy files from package **tests/Sancti** directory to laravel app **tests/Sancti
 
 ### Run tests
 ```sh
-php artisan test tests/Sancti --stop-on-failure
+php artisan test tests/Webi --stop-on-failure
 ```
