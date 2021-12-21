@@ -18,7 +18,9 @@ GRANT ALL PRIVILEGES ON *.* TO root@127.0.0.1 IDENTIFIED BY 'toor' WITH GRANT OP
 
 ### Create database mysql command line
 ```sh
+# for app and tests
 mysql -uroot -ptoor -e "CREATE DATABASE IF NOT EXISTS laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -uroot -ptoor -e "CREATE DATABASE IF NOT EXISTS laravel_testing CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
 ## Create laravel project
@@ -27,12 +29,16 @@ composer create-project laravel/laravel webi
 cd webi
 ```
 
-### Install webi with composer (v1.0 or dev-main)
+### Install webi with composer (v2.0 or dev-main)
+```sh
 composer require breakermind/webi
+```
+
+### Or add in composer.json
 ```json
 {
 	"require": {
-		"breakermind/webi": "^1.0"
+		"breakermind/webi": "^2.0"
 	}
 }
 ```
@@ -216,7 +222,7 @@ Add if installed not from composer or if local package or if errors
 		"url": "https://github.com/breakermind/webi"
 	}],
 	"require": {
-		"breakermind/webi": "^1.0"
+		"breakermind/webi": "^2.0"
 	}
 }
 ```
