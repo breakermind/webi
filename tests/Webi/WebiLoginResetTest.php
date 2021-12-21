@@ -18,7 +18,7 @@ use App\Models\User;
 */
 class WebiLoginResetTest extends TestCase
 {
-	use RefreshDatabase;
+	// use RefreshDatabase;
 
 	function getPassword($html)
 	{
@@ -100,10 +100,6 @@ class WebiLoginResetTest extends TestCase
 			'message' => 'Authenticated.'
 		]);
 
-		$cookies = [
-			$res->headers->getCookies()[3]->getName() => $res->headers->getCookies()[3]->getValue(),
-		];
-
 		// Auth::logout();
 
 		$token = User::where('email', $user->email)->first()->remember_token;
@@ -125,5 +121,31 @@ class WebiLoginResetTest extends TestCase
 		$res->assertStatus(422)->assertJson([
 			'message' => 'Not authenticated.'
 		]);
+	}
+
+	/** @test */
+	function csrf_session_counter()
+	{
+		$res = $this->get('/web/api/csrf');
+
+		$res->assertStatus(200)->assertJson([
+			'message' => 'Csrf token created.',
+			'counter' => 1,
+		]);
+
+		$token = [
+			$res->headers->getCookies()[0]->getName() => $res->headers->getCookies()[0]->getValue(),
+			$res->headers->getCookies()[1]->getName() => $res->headers->getCookies()[1]->getValue(),
+			// $res->headers->getCookies()[2]->getName() => $res->headers->getCookies()[2]->getValue(),
+		];
+
+		$res = $this->withCookies($token)->get('/web/api/csrf');
+
+		$res->assertStatus(200)->assertJson([
+			'message' => 'Csrf token created.',
+			'counter' => 2,
+		]);
+
+		// dd($res->headers->getCookies());
 	}
 }
