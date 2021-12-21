@@ -65,6 +65,30 @@ MAIL_FROM_ADDRESS=hi@localhost
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
+### Change app User class
+app/Models/User.php
+```php
+<?php
+namespace App\Models;
+
+use Webi\Models\WebiUser;
+// use Laravel\Sanctum\HasApiTokens;
+
+class User extends WebiUser
+{
+	// use HasApiTokens;
+
+	protected $casts = [
+		// 'email_verified_at' => 'datetime',
+	];
+
+	protected $dispatchesEvents = [
+		// 'saved' => UserSaved::class,
+		// 'deleted' => UserDeleted::class,
+	];
+}
+```
+
 ## Webi setup (optional)
 ```sh
 php artisan vendor:publish --provider="Webi\WebiServiceProvider.php"
