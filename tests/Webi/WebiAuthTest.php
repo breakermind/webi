@@ -29,7 +29,7 @@ class WebiAuthTest extends AuthenticatedTestCase
 	/** @test */
 	function logged_user_data()
 	{
-		$res = $this->get('web/api/test');
+		$res = $this->get('web/api/test/admin');
 
 		$res->assertOk();
 

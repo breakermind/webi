@@ -132,8 +132,12 @@ curl -X POST http://app.xx/web/api/reset -F "email=bo@woo.xx"
 curl -X POST http://127.0.0.1:8000/api/reset -F "email=bo@woo.xx"
 
 # get logged user data
-curl http://app.xx/web/api/webi-test
-curl http://127.0.0.1:8000/web/api/webi-test
+curl http://app.xx/web/api/test/admin
+curl http://127.0.0.1:8000/web/api/test/admin
+
+# csrf token
+curl http://app.xx/web/api/csrf
+curl http://127.0.0.1:8000/web/api/csrf
 
 # check is logged via remember me
 curl http://app.xx/web/api/logged
@@ -184,7 +188,7 @@ curl http://127.0.0.1:8000/api/logout
 </script>
 ```
 
-## Auth routes
+## Route examples
 routes/api.php
 ```php
 <?php
@@ -225,7 +229,7 @@ Route::fallback(function (){
 })->name('fallback');
 ```
 
-## Package settings
+# Package settings (dev)
 
 ### Add service provider to config/app.php (if errors)
 Add if installed not from composer or if local package or if errors
