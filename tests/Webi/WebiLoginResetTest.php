@@ -18,7 +18,7 @@ use App\Models\User;
 */
 class WebiLoginResetTest extends TestCase
 {
-	// use RefreshDatabase;
+	use RefreshDatabase;
 
 	function getPassword($html)
 	{
