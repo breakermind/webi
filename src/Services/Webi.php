@@ -41,7 +41,10 @@ class Webi
 		$this->loginRememberToken($request);
 
 		if(Auth::user()) {
-			return response()->json(['message' => 'Authenticated via remember me.'], 200);
+			return response()->json([
+				'message' => 'Authenticated via remember me.',
+				'user' => Auth::user(),
+			], 200);
 		} else {
 			throw new Exception("Not authenticated.", 422);
 		}
@@ -127,10 +130,16 @@ class Webi
 
 	function logout(Request $request)
 	{
-		Auth::logout();
-		$request->session()->invalidate();
-		$request->session()->regenerateToken();
-		return response()->json(['message' => 'Logged out.']);
+		try {
+			Auth::logout();
+			$r->session()->flush();
+			$r->session()->invalidate();
+			$r->session()->regenerateToken();
+		} catch (Exception $e) {
+			report($e);
+			return response()->json(['message' => trans('Logged out error.')]);
+		}
+		return response()->json(['message' => trans('Logged out.')]);
 	}
 
 	function reset(WebiResetPasswordRequest $request)
