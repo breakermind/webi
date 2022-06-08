@@ -17,6 +17,8 @@ use Webi\Http\Requests\WebiActivateRequest;
 use Webi\Http\Requests\WebiRegisterRequest;
 use Webi\Http\Requests\WebiResetPasswordRequest;
 use Webi\Http\Requests\WebiChangePasswordRequest;
+use Webi\Events\WebiUserCreated;
+use Webi\Events\WebiUserLogged;
 
 class Webi
 {
@@ -60,6 +62,10 @@ class Webi
 				}
 
 				$request->session()->regenerate();
+
+				// Event
+				WebiUserLogged::dispatch(Auth::user(), request()->ip());
+
 			} catch (Exception $e) {
 				Log::error($e->getMessage());
 				throw new Exception("Confirm email address.", 422);
@@ -97,6 +103,9 @@ class Webi
 			Log::error($e->getMessage());
 			throw new Exception("Unable to send e-mail, please try again later.", 422);
 		}
+
+		// Event
+		WebiUserCreated::dispatch($user, request()->ip());
 
 		return response()->json(['message' => 'Account has been created, please confirm your email address.', 'created' => true], 201);
 	}

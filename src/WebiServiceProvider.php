@@ -11,6 +11,7 @@ use Webi\Http\Middleware\WebiLocales;
 use Webi\Http\Middleware\WebiJsonResponse;
 use Webi\Http\Middleware\WebiVerifyCsrfToken;
 use Webi\Http\Facades\WebiFacade;
+use Webi\Providers\WebiEventServiceProvider;
 use Webi\Services\Webi;
 
 class WebiServiceProvider extends ServiceProvider
@@ -26,6 +27,8 @@ class WebiServiceProvider extends ServiceProvider
 		$this->app->bind('webi-facade', function($app) {
 			return new WebiFacade();
 		});
+
+		$this->app->register(WebiEventServiceProvider::class);
 	}
 
 	public function boot(Kernel $kernel)
