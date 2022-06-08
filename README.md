@@ -29,7 +29,7 @@ composer create-project laravel/laravel webi
 cd webi
 ```
 
-### Install webi with composer (v2.0 or dev-main)
+### Install webi with composer (v3.0 or dev-main)
 ```sh
 composer require breakermind/webi
 ```
@@ -38,7 +38,7 @@ composer require breakermind/webi
 ```json
 {
 	"require": {
-		"breakermind/webi": "^2.0"
+		"breakermind/webi": "^3.0"
 	}
 }
 ```
