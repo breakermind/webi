@@ -32,6 +32,9 @@ class WebiUpdateUsersTable extends Migration
 			if (!Schema::hasColumn('users', 'newsletter_on')) {
 				$table->tinyInteger('newsletter_on')->nullable(true)->default(1);
 			}
+			if (!Schema::hasColumn('users', 'image')) {
+				$table->string('image')->nullable(true);
+			}
 			if (!Schema::hasColumn('users', 'deleted_at')) {
 				$table->softDeletes();
 			}

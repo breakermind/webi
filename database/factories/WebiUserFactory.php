@@ -20,6 +20,8 @@ class WebiUserFactory extends Factory
 			'email_verified_at' => now(),
 			'password' => Hash::make('password123'),
 			'remember_token' => Str::random(50),
+			'newsletter_on' => 1,
+			'image' => 'https://www.w3schools.com/howto/img_avatar.png',
 			'code' => Str::random(10),
 			'ip' => '127.0.0.127',
 		];
