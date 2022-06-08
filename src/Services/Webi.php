@@ -40,7 +40,7 @@ class Webi
 	{
 		$this->loginRememberToken($request);
 
-		if(Auth::user()) {
+		if(Auth::check()) {
 			return response()->json([
 				'message' => 'Authenticated via remember me.',
 				'user' => Auth::user(),
@@ -131,6 +131,9 @@ class Webi
 	function logout(Request $request)
 	{
 		try {
+			if(Auth::check()) {
+				Auth::user()->update(['remember_token' => null]);
+			}
 			Auth::logout();
 			$request->session()->flush();
 			$request->session()->invalidate();

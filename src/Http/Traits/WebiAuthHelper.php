@@ -90,22 +90,20 @@ trait WebiAuthHelper
 
 	function loginRememberToken(Request $request)
 	{
-		$sess = $request->cookie('_remeber_token');
-		if(!empty($sess)) {
-			$user = User::where([
-				'remember_token' => $sess
-			])->whereNotNull('email_verified_at')->first();
+		if(!Auth::check()) {
+			$sess = $request->cookie('_remeber_token');
+			if(!empty($sess)) {
+				$user = User::where([
+					'remember_token' => $sess
+				])->whereNotNull('email_verified_at')
+				  ->whereNull('deleted_at')
+				  ->first();
 
-			$this->checkUser($user);
-
-			$request->session()->regenerate();
-
-			Auth::login($user, true);
-
-			if(Auth::check()) {
-				return Auth::user();
+				if ($user instanceof User) {
+					$request->session()->regenerate();
+					Auth::login($user, true);
+				}
 			}
 		}
-		return null;
 	}
 }
