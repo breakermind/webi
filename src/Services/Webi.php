@@ -132,9 +132,9 @@ class Webi
 	{
 		try {
 			Auth::logout();
-			$r->session()->flush();
-			$r->session()->invalidate();
-			$r->session()->regenerateToken();
+			$request->session()->flush();
+			$request->session()->invalidate();
+			$request->session()->regenerateToken();
 		} catch (Exception $e) {
 			report($e);
 			return response()->json(['message' => trans('Logged out error.')]);
