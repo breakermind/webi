@@ -61,7 +61,7 @@ MAIL_PORT=25
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=hi@localhost
+MAIL_FROM_ADDRESS=user@localhost
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
@@ -104,6 +104,13 @@ composer dump-autoload -o
 ### Migrations
 ```sh
 php artisan migrate
+
+php artisan migrate:fresh
+```
+
+### Seeders
+```sh
+php artisan db:seed --class=WebiSeeder
 ```
 
 ### Run local server
@@ -279,6 +286,9 @@ nano .env.testing
 
 # database tables
 php artisan --env=testing migrate
+
+# Seeders
+php artisan --env=testing db:seed --class=WebiSeeder
 
 # copy test files
 php artisan vendor:publish --tag=webi-tests --force

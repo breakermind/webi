@@ -10,7 +10,7 @@ class WebiSeeder extends Seeder
 	function run()
 	{
 		$this->call([
-			// Seeders::class
+			WebiUserSeeder::class
 		]);
 	}
 
