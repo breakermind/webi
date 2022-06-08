@@ -4,7 +4,12 @@ namespace Webi;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Http\Kernel;
 use Webi\Http\Middleware\WebiAuthRoles;
+use Webi\Http\Middleware\WebiAutoLogin;
+use Webi\Http\Middleware\WebiLocales;
+use Webi\Http\Middleware\WebiJsonResponse;
+use Webi\Http\Middleware\WebiVerifyCsrfToken;
 use Webi\Http\Facades\WebiFacade;
 use Webi\Services\Webi;
 
@@ -23,10 +28,25 @@ class WebiServiceProvider extends ServiceProvider
 		});
 	}
 
-	public function boot()
+	public function boot(Kernel $kernel)
 	{
-		$this->app['router']->aliasMiddleware('webi-role', WebiAuthRoles::class);
+		// Global
+		// $kernel->pushMiddleware(GlobalMiddleware::class);
 
+		// Route
+		$this->app['router']->aliasMiddleware('webi-role', WebiAuthRoles::class);
+		$this->app['router']->aliasMiddleware('webi-json', WebiJsonResponse::class);
+		$this->app['router']->aliasMiddleware('webi-nocsrf', WebiVerifyCsrfToken::class);
+
+		// Group
+		if(config('webi.settings.locales') == true) {
+			$this->app['router']->pushMiddlewareToGroup('web', WebiLocales::class);
+		}
+		if(config('webi.settings.autologin') == true) {
+			$this->app['router']->pushMiddlewareToGroup('web', WebiAutoLogin::class);
+		}
+
+		// Create routes
 		if(config('webi.settings.routes') == true) {
 			$this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 		}

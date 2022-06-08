@@ -1,9 +1,11 @@
 <?php
 
 return [
-	'version' => '1.0.0',
+	'version' => '3.0.0',
 
 	'settings' => [
-		'routes' => true
+		'routes' => true,
+		'autologin' => true,
+		'locales' => true,
 	],
 ];

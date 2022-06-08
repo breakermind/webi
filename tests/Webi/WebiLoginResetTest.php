@@ -42,7 +42,8 @@ class WebiLoginResetTest extends TestCase
 		]);
 
 		Event::assertDispatched(MessageSent::class, function ($e) use ($user) {
-			$html = $e->message->getBody();
+			// $html = $e->message->getBody();
+			$html = $e->message->getHtmlBody();
 
 			$this->assertMatchesRegularExpression('/word>[a-zA-Z0-9]+<\/pass/', $html);
 

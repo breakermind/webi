@@ -13,6 +13,6 @@ class WebiVerifyCsrfToken extends Middleware
 	 */
 	protected $except = [
 		// Disable csrf
-		'/web/api/*'
+		'/web/api/no/scrf/*'
 	];
 }

@@ -64,7 +64,10 @@ class Webi
 				Log::error($e->getMessage());
 				throw new Exception("Confirm email address.", 422);
 			}
-			return response()->json(['message' => 'Authenticated.'], 200);
+			return response()->json([
+				'message' => 'Authenticated.',
+				'user' => Auth::user(),
+			], 200);
 		} else {
 			throw new Exception("Invalid credentials.", 422);
 		}
