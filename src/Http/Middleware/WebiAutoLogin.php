@@ -25,7 +25,11 @@ class WebiAutoLogin
 				if ($user instanceof User) {
 					$request->session()->regenerate();
 					Auth::login($user, true);
-					Log::info("AUTOLOGIN##ID##".$user->id."##");
+
+					Log::build([
+						'driver' => 'single',
+						'path' => storage_path('logs/webi.log'),
+					])->info("AUTOLOGIN##ID##".$user->id."##");
 				}
 			}
 		}
