@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Webi\Http\Controllers\WebiController;
 
-Route::prefix('web/api')->name('web.api.')->middleware(['web'])->group(function() {
+Route::prefix('web/api')->name('web.api.')->middleware(['web', 'webi-locale', 'webi-autologin'])->group(function() {
 
 	// Public routes
 	Route::post('/login', [WebiController::class, 'login'])->name('login');
@@ -12,6 +12,7 @@ Route::prefix('web/api')->name('web.api.')->middleware(['web'])->group(function(
 	Route::get('/activate/{id}/{code}', [WebiController::class, 'activate'])->name('activate');
 	Route::get('/logged', [WebiController::class, 'logged'])->name('logged');
 	Route::get('/csrf', [WebiController::class, 'csrf'])->name('csrf');
+	Route::get('/locale/{locale}', [WebiController::class, 'locale'])->name('locale');
 
 	// Only logged users
 	Route::middleware(['auth', 'webi-role:admin|worker|user'])->group(function () {

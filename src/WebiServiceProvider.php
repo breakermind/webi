@@ -40,14 +40,8 @@ class WebiServiceProvider extends ServiceProvider
 		$this->app['router']->aliasMiddleware('webi-role', WebiAuthRoles::class);
 		$this->app['router']->aliasMiddleware('webi-json', WebiJsonResponse::class);
 		$this->app['router']->aliasMiddleware('webi-nocsrf', WebiVerifyCsrfToken::class);
-
-		// Group
-		if(config('webi.settings.locales') == true) {
-			$this->app['router']->pushMiddlewareToGroup('web', WebiLocales::class);
-		}
-		if(config('webi.settings.autologin') == true) {
-			$this->app['router']->pushMiddlewareToGroup('web', WebiAutoLogin::class);
-		}
+		$this->app['router']->aliasMiddleware('webi-locale', WebiLocales::class);
+		$this->app['router']->aliasMiddleware('webi-autologin', WebiAutoLogin::class);
 
 		// Create routes
 		if(config('webi.settings.routes') == true) {

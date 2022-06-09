@@ -19,6 +19,11 @@ class WebiController extends Controller
 		return (new Webi())->csrf();
 	}
 
+	function locale($locale)
+	{
+		return (new Webi())->locale($locale);
+	}
+
 	function logged(Request $r)
 	{
 		return (new Webi())->logged($r);

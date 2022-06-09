@@ -1,24 +1,17 @@
 <?php
-
 namespace Webi\Http\Middleware;
 
 use Closure;
-use Exception;
+use Session;
+use App;
+use Config;
 
-class WebiLocales
-{
+class WebiLocales {
+
 	public function handle($request, Closure $next)
 	{
-		$lang = $request->input('lang') ?? '';
-
-		if(!empty($lang)) {
-			app()->setLocale($lang);
-			$request->session()->put('locale', $lang);
-		} else {
-			if(!empty(session('locale'))) {
-				app()->setLocale(session('locale'));
-			}
-		}
+		$lang = Session::get('locale', Config::get('app.locale'));
+		App::setLocale($lang);
 
 		return $next($request);
 	}

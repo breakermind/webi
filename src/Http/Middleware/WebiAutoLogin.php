@@ -5,6 +5,7 @@ namespace Webi\Http\Middleware;
 use Closure;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
 
 class WebiAutoLogin
@@ -12,7 +13,7 @@ class WebiAutoLogin
 	public function handle($request, Closure $next)
 	{
 		if(!Auth::check()) {
-			$sess = $request->cookie('_remeber_token');
+			$sess = Cookie::get('_remeber_token');
 			if(!empty($sess)) {
 				$user = User::where([
 					'remember_token' => $sess

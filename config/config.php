@@ -5,7 +5,5 @@ return [
 
 	'settings' => [
 		'routes' => true,
-		'autologin' => true,
-		'locales' => true,
 	],
 ];

@@ -32,8 +32,24 @@ class Webi
 
 		return response([
 			'message' => 'Csrf token created.',
-			'counter' => session('webi_cnt')
+			'counter' => session('webi_cnt'),
+			'locale' => app()->getLocale()
 		]);
+	}
+
+	function locale($locale)
+	{
+		if(!empty($locale) && strlen($locale) == 2){
+			session(['locale' => $locale]);
+			app()->setLocale($locale);
+
+			return response()->json([
+				'message' => trans('Locale has been changed.'),
+				'locale' => app()->getLocale(),
+			], 200);
+		} else {
+			throw new Exception(trans("Locale has not been changed."), 422);
+		}
 	}
 
 	function logged(Request $request)
@@ -76,8 +92,16 @@ class Webi
 			return response()->json([
 				'message' => 'Authenticated.',
 				'user' => Auth::user(),
+				'current' => app()->getLocale(),
 			], 200);
 		} else {
+
+			return response()->json([
+				'message' => 'Invalid credentials.',
+				'current' => app()->getLocale(),
+				'session' => session('locale')
+			], 200);
+
 			throw new Exception("Invalid credentials.", 422);
 		}
 	}
