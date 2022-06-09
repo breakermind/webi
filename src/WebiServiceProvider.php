@@ -6,7 +6,6 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Http\Kernel;
 use Webi\Http\Middleware\WebiAuthRoles;
-use Webi\Http\Middleware\WebiAutoLogin;
 use Webi\Http\Middleware\WebiLocales;
 use Webi\Http\Middleware\WebiJsonResponse;
 use Webi\Http\Middleware\WebiVerifyCsrfToken;
@@ -41,7 +40,6 @@ class WebiServiceProvider extends ServiceProvider
 		$this->app['router']->aliasMiddleware('webi-json', WebiJsonResponse::class);
 		$this->app['router']->aliasMiddleware('webi-nocsrf', WebiVerifyCsrfToken::class);
 		$this->app['router']->aliasMiddleware('webi-locale', WebiLocales::class);
-		$this->app['router']->aliasMiddleware('webi-autologin', WebiAutoLogin::class);
 
 		// Create routes
 		if(config('webi.settings.routes') == true) {

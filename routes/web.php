@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Webi\Http\Controllers\WebiController;
 
-Route::prefix('web/api')->name('web.api.')->middleware(['web', 'webi-locale', 'webi-autologin'])->group(function() {
+Route::prefix('web/api')->name('web.api.')->middleware(['web', 'webi-locale'])->group(function() {
 
 	// Public routes
 	Route::post('/login', [WebiController::class, 'login'])->name('login');
