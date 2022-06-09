@@ -6,6 +6,7 @@ use Closure;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class WebiAutoLogin
@@ -13,7 +14,7 @@ class WebiAutoLogin
 	public function handle($request, Closure $next)
 	{
 		if(!Auth::check()) {
-			$sess = Cookie::get('_remeber_token');
+			$sess = $request->cookie('_remeber_token');
 			if(!empty($sess)) {
 				$user = User::where([
 					'remember_token' => $sess
@@ -24,6 +25,7 @@ class WebiAutoLogin
 				if ($user instanceof User) {
 					$request->session()->regenerate();
 					Auth::login($user, true);
+					Log::info("AUTOLOGIN##ID##".$user->id."##");
 				}
 			}
 		}
