@@ -57,6 +57,9 @@ class Webi
 		$this->loginRememberToken($request);
 
 		if(Auth::check()) {
+			// Event
+			WebiUserLogged::dispatch(Auth::user(), request()->ip());
+
 			return response()->json([
 				'message' => 'Authenticated via remember me.',
 				'user' => Auth::user(),
