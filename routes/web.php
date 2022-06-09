@@ -15,14 +15,14 @@ Route::prefix('web/api')->name('web.api.')->middleware(['web', 'webi-locale'])->
 	Route::get('/locale/{locale}', [WebiController::class, 'locale'])->name('locale');
 
 	// Only logged users
-	Route::middleware(['auth', 'webi-role:admin|worker|user'])->group(function () {
+	Route::middleware(['auth', 'webi-locale', 'webi-role:admin|worker|user'])->group(function () {
 		Route::get('/logout', [WebiController::class, 'logout'])->name('logout');
 		Route::post('/change-password', [WebiController::class, 'change'])->name('change-password');
 		Route::get('/test/user', [WebiController::class, 'test'])->name('test.user');
 	});
 
 	// Only logged admin
-	Route::middleware(['auth', 'webi-role:admin'])->group(function () {
+	Route::middleware(['auth', 'webi-locale', 'webi-role:admin'])->group(function () {
 		Route::get('/test/admin', [WebiController::class, 'test'])->name('test.admin');
 	});
 

@@ -24,6 +24,10 @@ class Webi
 {
 	use WebiAuthHelper;
 
+	function __construct() {
+		app()->setLocale(session('locale', config('app.locale')));
+	}
+
 	function csrf()
 	{
 		request()->session()->regenerateToken();
@@ -31,7 +35,7 @@ class Webi
 		session(['webi_cnt' => session('webi_cnt') + 1]);
 
 		return response([
-			'message' => 'Csrf token created.',
+			'message' => trans('Csrf token created.'),
 			'counter' => session('webi_cnt'),
 			'locale' => app()->getLocale()
 		]);
@@ -61,11 +65,15 @@ class Webi
 			WebiUserLogged::dispatch(Auth::user(), request()->ip());
 
 			return response()->json([
-				'message' => 'Authenticated via remember me.',
+				'message' => trans('Authenticated via remember me.'),
 				'user' => Auth::user(),
+				'locale' => app()->getLocale(),
 			], 200);
 		} else {
-			throw new Exception("Not authenticated.", 422);
+			return response()->json([
+				'message' => trans('Not authenticated.'),
+				'locale' => app()->getLocale(),
+			], 422);
 		}
 	}
 
@@ -90,22 +98,20 @@ class Webi
 
 			} catch (Exception $e) {
 				Log::error($e->getMessage());
-				throw new Exception("Confirm email address.", 422);
+				throw new Exception(trans("Confirm email address."), 422);
 			}
+
 			return response()->json([
-				'message' => 'Authenticated.',
+				'message' => trans('Authenticated.'),
 				'user' => Auth::user(),
 				'current' => app()->getLocale(),
 			], 200);
 		} else {
-
 			return response()->json([
-				'message' => 'Invalid credentials.',
+				'message' => trans('Invalid credentials.'),
 				'current' => app()->getLocale(),
 				'session' => session('locale')
-			], 200);
-
-			throw new Exception("Invalid credentials.", 422);
+			], 422);
 		}
 	}
 
@@ -123,7 +129,7 @@ class Webi
 			$user = $this->createCode($user);
 		} catch (Exception $e) {
 			Log::error($e->getMessage());
-			throw new Exception("Can not create user.", 422);
+			throw new Exception(trans("Can not create user."), 422);
 		}
 
 		try {
@@ -131,13 +137,13 @@ class Webi
 		} catch (Exception $e) {
 			$user->delete();
 			Log::error($e->getMessage());
-			throw new Exception("Unable to send e-mail, please try again later.", 422);
+			throw new Exception(trans("Unable to send e-mail, please try again later."), 422);
 		}
 
 		// Event
 		WebiUserCreated::dispatch($user, request()->ip());
 
-		return response()->json(['message' => 'Account has been created, please confirm your email address.', 'created' => true], 201);
+		return response()->json(['message' => trans('Account has been created, please confirm your email address.'), 'created' => true], 201);
 	}
 
 	function activate(WebiActivateRequest $request)
@@ -149,10 +155,10 @@ class Webi
 			$this->activateEmail($user);
 		} catch (Exception $e) {
 			Log::error($e->getMessage());
-			throw new Exception("Invalid activation code.", 422);
+			throw new Exception(trans("Invalid activation code."), 422);
 		}
 
-		return response()->json(['message' => 'Email has been confirmed.']);
+		return response()->json(['message' => trans('Email has been confirmed.')]);
 	}
 
 	function logout(Request $request)
@@ -165,6 +171,7 @@ class Webi
 			$request->session()->flush();
 			$request->session()->invalidate();
 			$request->session()->regenerateToken();
+			session(['locale' => config('app.locale')]);
 		} catch (Exception $e) {
 			report($e);
 			return response()->json(['message' => trans('Logged out error.')]);
@@ -181,7 +188,7 @@ class Webi
 			$user = User::where('email', $valid['email'])->first();
 		} catch (Exception $e) {
 			Log::error($e->getMessage());
-			throw new Exception("Database error.", 422);
+			throw new Exception(trans("Database error."), 422);
 		}
 
 		$password = uniqid();
@@ -192,10 +199,10 @@ class Webi
 			Mail::to($user)->send(new PasswordMail($user, $password));
 		} catch (Exception $e) {
 			Log::error($e->getMessage());
-			throw new Exception("Unable to send e-mail, please try again later." . $e->getMessage());
+			throw new Exception(trans("Unable to send e-mail, please try again later.") . $e->getMessage());
 		}
 
-		return response()->json(['message' => 'A new password has been sent to the e-mail address provided.']);
+		return response()->json(['message' => trans('A new password has been sent to the e-mail address provided.')]);
 	}
 
 	function change(WebiChangePasswordRequest $request)
@@ -208,12 +215,12 @@ class Webi
 					->update(['password' => Hash::make($request->input('password'))]);
 			} catch (Exception $e) {
 				Log::error($e->getMessage());
-				throw new Exception("Database error.", 422);
+				throw new Exception(trans("Database error."), 422);
 			}
 		} else {
-			throw new Exception("Invalid current password.", 422);
+			throw new Exception(trans("Invalid current password."), 422);
 		}
 
-		return response()->json(['message' => 'A password has been updated.']);
+		return response()->json(['message' => trans('A password has been updated.')]);
 	}
 }
