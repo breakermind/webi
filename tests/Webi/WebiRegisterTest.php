@@ -62,8 +62,8 @@ class WebiRegisterTest extends TestCase
 		Event::assertDispatched(MessageSent::class, function ($e) {
 			// $html = $e->message->getBody();
 			$html = $e->message->getHtmlBody();
-			$this->assertStringContainsString("/web/api/activate", $html);
-			$this->assertMatchesRegularExpression('/web\/api\/activate\/[0-9]+\/[a-z0-9]+"/i', $html);
+			$this->assertStringContainsString("/activate", $html);
+			$this->assertMatchesRegularExpression('/\/activate\/[0-9]+\/[a-z0-9]+"/i', $html);
 			return true;
 		});
 	}
