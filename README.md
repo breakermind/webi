@@ -92,6 +92,12 @@ class User extends WebiUser
 ### Webi setup (optional)
 ```sh
 php artisan vendor:publish --provider="Webi\WebiServiceProvider.php"
+# Webi custom settings
+php artisan vendor:publish --tag=webi-config
+php artisan vendor:publish --tag=webi-email
+php artisan vendor:publish --tag=webi-lang
+php artisan vendor:publish --tag=webi-tests
+# Override with
 php artisan vendor:publish --tag=webi-config --force
 ```
 

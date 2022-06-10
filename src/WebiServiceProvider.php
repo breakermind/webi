@@ -53,8 +53,15 @@ class WebiServiceProvider extends ServiceProvider
 		if ($this->app->runningInConsole()) {
 			$this->publishes([
 				__DIR__.'/../config/config.php' => config_path('webi.php'),
-				__DIR__.'/../resources/views' => resource_path('views/vendor/webi')
 			], 'webi-config');
+
+			$this->publishes([
+				__DIR__.'/../resources/views' => resource_path('views/vendor/webi')
+			], 'webi-email');
+
+			$this->publishes([
+				__DIR__.'/../lang' => base_path('lang/vendor/webi')
+			], 'webi-lang');
 
 			$this->publishes([
 				__DIR__.'/../tests/Webi' => base_path('tests/Webi')

@@ -151,14 +151,28 @@ class Webi
 		$valid = $request->validated();
 
 		try {
-			$user = User::where('id', $valid['id'])->whereNotNull('code')->where('code', $valid['code'])->first();
-			$this->activateEmail($user);
+			$user = User::where('id', (int) $valid['id'])->first();
+
+			if($user instanceof User) {
+				if(!empty($user->email_verified_at)) {
+					return response()->json([
+						'message' => trans('The email address has already been confirmed.')
+					]);
+				} else {
+					if(!empty($user->code) && $user->code == $valid['code']) {
+						$this->activateEmail($user);
+						return response()->json([
+							'message' => trans('Email has been confirmed.')
+						]);
+					}
+				}
+			}
 		} catch (Exception $e) {
 			Log::error($e->getMessage());
-			throw new Exception(trans("Invalid activation code."), 422);
+			throw new Exception(trans("Database error."), 422);
 		}
 
-		return response()->json(['message' => trans('Email has been confirmed.')]);
+		return response()->json(['message' => trans('Invalid activation code.')]);
 	}
 
 	function logout(Request $request)

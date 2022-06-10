@@ -22,17 +22,29 @@ class WebiActivateTest extends TestCase
 	/** @test */
 	function activate_user()
 	{
-		$user = User::factory()->create();
+		$user = User::factory()->create(['email_verified_at' => null]);
 
 		$this->assertDatabaseHas('users', [
 			'email' => $user->email,
-			'code' => $user->code
+			'code' => $user->code,
+		]);
+
+		$res = $this->get('/web/api/activate/'.$user->id.'/'.$user->code.'xxx');
+
+		$res->assertStatus(200)->assertJson([
+			'message' => 'Invalid activation code.'
 		]);
 
 		$res = $this->get('/web/api/activate/'.$user->id.'/'.$user->code);
 
 		$res->assertStatus(200)->assertJson([
 			'message' => 'Email has been confirmed.'
+		]);
+
+		$res = $this->get('/web/api/activate/'.$user->id.'/'.$user->code);
+
+		$res->assertStatus(200)->assertJson([
+			'message' => 'The email address has already been confirmed.'
 		]);
 
 		$db_user = User::where('email', $user->email)->first();
