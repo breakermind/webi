@@ -29,7 +29,7 @@ composer create-project laravel/laravel webi
 cd webi
 ```
 
-### Install webi with composer (v4.0 or dev-main)
+### Install webi with composer (v5.0 or dev-main)
 ```sh
 composer require breakermind/webi
 ```
@@ -38,7 +38,7 @@ composer require breakermind/webi
 ```json
 {
 	"require": {
-		"breakermind/webi": "^4.0"
+		"breakermind/webi": "^5.0"
 	}
 }
 ```
@@ -89,18 +89,6 @@ class User extends WebiUser
 }
 ```
 
-### Webi setup (optional)
-```sh
-php artisan vendor:publish --provider="Webi\WebiServiceProvider.php"
-# Webi custom settings
-php artisan vendor:publish --tag=webi-config
-php artisan vendor:publish --tag=webi-email
-php artisan vendor:publish --tag=webi-lang
-php artisan vendor:publish --tag=webi-tests
-# Override with
-php artisan vendor:publish --tag=webi-config --force
-```
-
 ### Update composer autoload
 ```sh
 composer update
@@ -112,6 +100,7 @@ composer dump-autoload -o
 php artisan migrate
 
 php artisan migrate:fresh
+php artisan migrate:fresh --seed
 ```
 
 ### Seeders
@@ -122,6 +111,21 @@ php artisan db:seed --class=WebiSeeder
 ### Run local server
 ```sh
 php artisan serv
+```
+
+### Webi setup (optional)
+```sh
+# Webi custom settings
+php artisan vendor:publish --tag=webi-config
+php artisan vendor:publish --tag=webi-email
+php artisan vendor:publish --tag=webi-lang
+php artisan vendor:publish --tag=webi-tests
+
+# Override with
+php artisan vendor:publish --tag=webi-config --force
+
+# Provider
+php artisan vendor:publish --provider="Webi\WebiServiceProvider.php"
 ```
 
 ## Default routes

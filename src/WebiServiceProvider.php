@@ -5,6 +5,7 @@ namespace Webi;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Webi\Http\Middleware\WebiAuthRoles;
 use Webi\Http\Middleware\WebiLocales;
 use Webi\Http\Middleware\WebiJsonResponse;
@@ -12,12 +13,17 @@ use Webi\Http\Middleware\WebiVerifyCsrfToken;
 use Webi\Http\Facades\WebiFacade;
 use Webi\Providers\WebiEventServiceProvider;
 use Webi\Services\Webi;
+use Webi\Exceptions\WebiHandler;
 
 class WebiServiceProvider extends ServiceProvider
 {
 	public function register()
 	{
 		$this->mergeConfigFrom(__DIR__.'/../config/config.php', 'webi');
+
+		if(config('webi.settings.error_handler') == true) {
+			$this->app->singleton(ExceptionHandler::class, WebiHandler::class);
+		}
 
 		$this->app->bind(Webi::class, function($app) {
 			return new Webi();
@@ -37,9 +43,9 @@ class WebiServiceProvider extends ServiceProvider
 
 		// Route
 		$this->app['router']->aliasMiddleware('webi-role', WebiAuthRoles::class);
+		$this->app['router']->aliasMiddleware('webi-locale', WebiLocales::class);
 		$this->app['router']->aliasMiddleware('webi-json', WebiJsonResponse::class);
 		$this->app['router']->aliasMiddleware('webi-nocsrf', WebiVerifyCsrfToken::class);
-		$this->app['router']->aliasMiddleware('webi-locale', WebiLocales::class);
 
 		// Create routes
 		if(config('webi.settings.routes') == true) {
